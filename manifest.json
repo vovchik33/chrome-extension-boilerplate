@@ -2,5 +2,16 @@
   "name": "Chrome extension boilerplate",
   "description": "A boilerplate for building Chrome extensions",
   "version": "1.0",
-  "manifest_version": 3
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  }
 }

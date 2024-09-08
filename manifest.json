@@ -1,0 +1,6 @@
+{
+  "name": "Chrome extension boilerplate",
+  "description": "A boilerplate for building Chrome extensions",
+  "version": "1.0",
+  "manifest_version": 3
+}

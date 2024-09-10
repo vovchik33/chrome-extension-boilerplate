@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Test Extension Options</title>
+    <link href="options_styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="groupsEditor">
+    <h3>Domains Group</h3>
+    <input id="groupName" placeholder="Group Name" type="text"/>
+    <textarea id="groupDomains" placeholder="Enter domains separated by commas"></textarea>
+    <label>
+        <input id="groupActive" type="checkbox"/> Active
+    </label>
+    <button id="addGroupButton">Add Group</button>
+</div>
+
+<div id="groupsList"></div>
+
+<div id="buttonContainer">
+    <button id="clearOptionsButton">Clear Options</button>
+    <button id="useRecommendedButton">Use Recommended</button>
+    <button id="exportGroupsButton">Export Groups</button> <!-- New Export Button -->
+    <button id="importGroupsButton">Import Groups</button> <!-- New Import Button -->
+</div>
+<input type="file" id="importGroupsInput" style="display:none;" />
+
+<script src="options.js"></script>
+</body>
+</html>

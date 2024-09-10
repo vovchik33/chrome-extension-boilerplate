@@ -1,0 +1,78 @@
+body {
+    min-width: 300px;
+}
+
+.header-title {
+    text-transform: uppercase;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.icon-button img {
+    width: 24px;
+    height: 24px;
+}
+
+button {
+    cursor: pointer;
+}
+
+#closeAllDiv {
+    text-align: center;
+}
+
+#closeAllButton {
+    background-color: red;
+    color: white;
+    margin-top: 5px;
+    /*border: none;*/
+    /*padding: 5px 10px;*/
+    cursor: pointer;
+    /*font-size: 16px;*/
+    border-radius: 5px;
+    width: 100%;
+}
+
+#closeAllButton:hover {
+    background-color: darkred;
+}
+
+#closeAllButton:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#closeOtherDiv {
+    text-align: center;
+}
+
+#closeOtherButton {
+    background-color: blue;
+    color: white;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+#closeOtherButton:hover {
+    background-color: darkblue;
+}
+
+#closeOtherButton:disabled {
+    background-color: grey;
+    cursor: not-allowed;
+    opacity: 0.6;
+}

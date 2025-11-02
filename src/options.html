@@ -10,19 +10,18 @@
     <h3>Domains Group</h3>
     <input id="groupName" placeholder="Group Name" type="text"/>
     <textarea id="groupDomains" placeholder="Enter domains separated by commas"></textarea>
-    <label>
-        <input id="groupActive" type="checkbox"/> Active
-    </label>
+    <input type="checkbox" id="groupActive">
+    <label for="groupActive" class="group-active-label">Active</label>
     <button id="addGroupButton">Add Group</button>
 </div>
 
 <div id="groupsList"></div>
 
 <div id="buttonContainer">
-    <button id="clearOptionsButton">Clear Options</button>
+    <button id="clearOptionsButton">Remove All</button>
     <button id="useRecommendedButton">Use Recommended</button>
-    <button id="exportGroupsButton">Export Groups</button> <!-- New Export Button -->
-    <button id="importGroupsButton">Import Groups</button> <!-- New Import Button -->
+    <button id="exportGroupsButton">Export</button>
+    <button id="importGroupsButton">Import</button>
 </div>
 <input type="file" id="importGroupsInput" style="display:none;" />
 

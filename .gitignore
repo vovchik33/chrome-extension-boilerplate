@@ -1,1 +1,20 @@
 .idea/
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+._*
+
+# Build artifacts
+builds.zip
+*.zip
+builds/latest/
+builds/.temp-build/
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Logs
+*.log
+npm-debug.log*

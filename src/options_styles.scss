@@ -1,4 +1,4 @@
-/* options_styles.css */
+/* options_styles.scss */
 
 /* General styles */
 body {
@@ -48,9 +48,10 @@ h3 {
 #groupsList li {
     background-color: #fff;
     margin: 5px 0;
-    padding: 10px;
+    /*padding: 10px;*/
     border: 1px solid #ddd;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Styles for group editor */
@@ -112,6 +113,7 @@ h3 {
     justify-content: space-between;
     position: relative;
     min-height: 2em;
+    padding: 5px;
 }
 
 .group-item.selected {
@@ -125,6 +127,7 @@ h3 {
 .group-label {
     flex-grow: 1;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .delete-button {
@@ -168,4 +171,8 @@ h3 {
 
 #buttonContainer button {
     margin-left: 10px; /* Optional: Add some space between buttons */
+}
+
+.group-active-label.disabled {
+    color: grey;
 }

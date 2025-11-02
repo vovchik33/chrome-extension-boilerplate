@@ -1,0 +1,29 @@
+{
+  "name": "tabs-remover",
+  "version": "0.2.0",
+  "description": "Chrome extension for managing tabs",
+  "scripts": {
+    "build": "node build.js",
+    "build:prod": "node build.js --prod",
+    "build:clean": "node build.js --clean",
+    "build:clean:prod": "node build.js --clean --prod",
+    "build:watch": "node build.js --watch",
+    "version": "node version.js",
+    "version:patch": "node version.js patch",
+    "version:minor": "node version.js minor",
+    "version:major": "node version.js major"
+  },
+  "keywords": [
+    "chrome-extension",
+    "tabs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "archiver": "^7.0.1",
+    "chokidar": "^3.6.0",
+    "clean-css": "^5.3.3",
+    "javascript-obfuscator": "^4.1.1",
+    "sass": "^1.93.3"
+  }
+}

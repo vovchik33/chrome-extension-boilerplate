@@ -11,10 +11,10 @@ const restoreOptions = (defaultGroups = []) => {
 
 const checkInputs = () => {
   const groupName = document.getElementById('groupName').value.trim();
-  const groupDomains = document.getElementById('groupDomains').value.trim();
+  // const groupDomains = document.getElementById('groupDomains').value.trim();
   const addGroupButton = document.getElementById('addGroupButton');
 
-  addGroupButton.disabled = !groupName || !groupDomains;
+  addGroupButton.disabled = !groupName; // Check we should be able to add empty group || !groupDomains;
 };
 
 const clearEditor = () => {
@@ -27,19 +27,22 @@ const clearEditor = () => {
 
 const addGroup = () => {
   const groupName = document.getElementById('groupName').value;
-  const groupDomains = document.getElementById('groupDomains').value.split(',').map(d => d.trim());
-  const groupActive = document.getElementById('groupActive').checked; // Get the active checkbox value
+  const groupDomains = document.getElementById('groupDomains').value
+    .split(',')
+    .map(d => d.trim())
+    .filter(i => !!i);
+  const groupActive = document.getElementById('groupActive'); // Get the active checkbox value
 
   chrome.storage.sync.get({ domainGroups: [] }, (items) => {
     const domainGroups = items.domainGroups;
 
     if (selectedIndex > -1) {
       // Update existing group
-      domainGroups[selectedIndex] = { name: groupName, domains: groupDomains, active: groupActive };
+      domainGroups[selectedIndex] = { name: groupName, domains: groupDomains, active: groupActive.checked };
       selectedIndex = -1; // Reset selected index
     } else {
       // Add new group
-      domainGroups.push({ name: groupName, domains: groupDomains, active: groupActive });
+      domainGroups.push({ name: groupName, domains: groupDomains, active: groupActive.checked });
     }
 
     chrome.storage.sync.set({ domainGroups: domainGroups }, () => {
@@ -135,13 +138,14 @@ const clearOptions = () => {
 // Sets recommended options
 const useRecommended = () => {
   const recommendedGroups = [
-    { active: true, name: 'Email', domains: ['gmail', 'mail', 'yahoo', 'outlook', 'mail.ru', 'aol', 'icloud', 'protonmail', 'zoho', 'yandex', 'tutanota', 'fastmail'] },
-    { active: true, name: 'Social Media', domains: ['chatgpt', 'coursehunter', 'facebook', 'x', 'twitter', 'instagram', 'linkedin', 'tiktok', 'youtube', 'snapchat', 'pinterest', 'reddit', 'tumblr', 'vimeo', 'telegram'] },
-    { active: true, name: 'News', domains: ['kyivpost', 'pravda.ua', 'unian.info', 'ukrinform.net', '112.international', 'interfax.ua', 'lb.ua', 'zn.ua', 'segodnya.ua', 'nv.ua', 'obozrevatel'] },
-    { active: true, name: 'Shopping', domains: ['amazon', 'ebay', 'walmart', 'target', 'aliexpress', 'etsy', 'bestbuy', 'homedepot', 'wayfair', 'macys'] },
-    { active: true, name: 'Work', domains: ['microsoftonline', 'tlnlive.ptec', 'bitbucket', 'localhost', 'stackoverflow', 'slack', 'trello', 'asana', 'jira', 'confluence', 'zoom.us', 'webex', 'gotomeeting', 'skype', 'microsoftteams', 'stash', 'figma'] },
-    { active: true, name: 'Entertainment', domains: ['football', 'netflix', 'hulu', 'disneyplus', 'hbomax', 'primevideo', 'youtube', 'twitch', 'vimeo', 'dailymotion', 'funnyordie'] },
-    { active: true, name: 'Google', domains: ['google', 'gmail', 'youtube', 'drive', 'maps', 'translate', 'photos', 'calendar', 'meet', 'keep', 'news'] },
+    { active: true, name: 'Empty', domains: ['newtab'] },
+    { active: true, name: 'Email', domains: ['gmail.com', 'mail.com', 'yahoo.com', 'outlook.com', 'mail.ru', 'aol.com', 'icloud.com', 'protonmail.com', 'zoho.com', 'yandex.com', 'tutanota.com', 'fastmail.com', 'gmx.com', 'hushmail.com', 'mailfence.com'] },
+    { active: true, name: 'Social Media', domains: ['chatgpt.com', 'coursehunter.net', 'facebook.com', 'x.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'tiktok.com', 'youtube.com', 'snapchat.com', 'pinterest.com', 'reddit.com', 'tumblr.com', 'vimeo.com', 'telegram.org', 'whatsapp.com', 'wechat.com', 'line.me'] },
+    { active: true, name: 'News', domains: ['kyivpost.com', 'pravda.ua', 'unian.info', 'ukrinform.net', '112.international', 'interfax.ua', 'lb.ua', 'zn.ua', 'segodnya.ua', 'nv.ua', 'obozrevatel.com', 'bbc.com', 'cnn.com', 'nytimes.com', 'theguardian.com', 'reuters.com', 'bloomberg.com'] },
+    { active: true, name: 'Shopping', domains: ['amazon.com', 'ebay.com', 'walmart.com', 'target.com', 'aliexpress.com', 'etsy.com', 'bestbuy.com', 'homedepot.com', 'wayfair.com', 'macys.com', 'costco.com', 'newegg.com', 'overstock.com', 'zappos.com', 'ikea.com'] },
+    { active: true, name: 'Work', domains: ['microsoftonline.com', 'bitbucket.org', 'localhost', 'stackoverflow.com', 'slack.com', 'trello.com', 'asana.com', 'jira.com', 'confluence.com', 'zoom.us', 'webex.com', 'gotomeeting.com', 'skype.com', 'microsoftteams.com', 'stash.com', 'figma.com', 'github.com', 'gitlab.com'] },
+    { active: true, name: 'Entertainment', domains: ['football.com', 'netflix.com', 'hulu.com', 'disneyplus.com', 'hbomax.com', 'primevideo.com', 'youtube.com', 'twitch.tv', 'vimeo.com', 'dailymotion.com', 'funnyordie.com', 'spotify.com', 'soundcloud.com', 'pandora.com', 'apple.com/music'] },
+    { active: true, name: 'Google', domains: ['google.com', 'gmail.com', 'youtube.com', 'drive.google.com', 'maps.google.com', 'translate.google.com', 'photos.google.com', 'calendar.google.com', 'meet.google.com', 'keep.google.com', 'news.google.com', 'books.google.com', 'play.google.com'] },
   ];
   chrome.storage.sync.set({ domainGroups: recommendedGroups }, () => {
     restoreGroups(recommendedGroups);

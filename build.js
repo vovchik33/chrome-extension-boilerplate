@@ -13,7 +13,7 @@ const config = {
   version: '0.2',
   buildDir: 'builds',
   srcDir: 'src',
-  extensionName: 'tabs-remover'
+  extensionName: 'tabs-combiner'
 };
 
 // Parse command line arguments

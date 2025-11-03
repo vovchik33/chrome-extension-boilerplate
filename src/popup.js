@@ -183,12 +183,56 @@ const refreshControls = () => {
 
   getGroupNamesFromStorage((groupNames) => {
     let totalTabCount = 0;
-    let ungroupedTabCount = 0;
+    let processedGroups = 0;
+    let domainsCollected = 0;
+    const allActiveDomains = [];
+
+    if (groupNames.length === 0) {
+      // If no groups, count all tabs as ungrouped
+      chrome.tabs.query({}, (tabs) => {
+        const ungroupedCount = tabs.length;
+        closeOtherTabsButton.textContent = `Close Other (${ungroupedCount}) Tabs`;
+        closeOtherTabsButton.disabled = ungroupedCount === 0;
+        closeAllTabsButton.disabled = true;
+      });
+      return;
+    }
+
+    // Helper function to count ungrouped tabs once all data is collected
+    const countUngroupedTabs = () => {
+      if (domainsCollected === groupNames.length && processedGroups === groupNames.length) {
+        chrome.tabs.query({}, (tabs) => {
+          let ungroupedTabCount = 0;
+          tabs.forEach(tab => {
+            try {
+              const url = new URL(tab.url);
+              const matchesGroup = allActiveDomains.some(domain => 
+                !!domain && url.hostname.includes(domain)
+              );
+              if (!matchesGroup) {
+                ungroupedTabCount++;
+              }
+            } catch (e) {
+              // Skip tabs with invalid URLs (like chrome:// or about:)
+            }
+          });
+
+          closeOtherTabsButton.textContent = `Close Other (${ungroupedTabCount}) Tabs`;
+          closeOtherTabsButton.disabled = ungroupedTabCount === 0;
+        });
+      }
+    };
 
     groupNames.forEach(groupName => {
       getDomainsFromStorage(groupName, (domains) => {
+        // Collect all active domains
+        allActiveDomains.push(...domains);
+        domainsCollected++;
+        countUngroupedTabs(); // Check if we can count now
+
         countTabsWithDomains(domains, (count) => {
           totalTabCount += count;
+          processedGroups++;
 
           const groupNameElement = document.createElement('span');
           groupNameElement.textContent = `${groupName} (${count})`;
@@ -222,32 +266,14 @@ const refreshControls = () => {
 
             closeButtonsDiv.appendChild(groupElement);
 
-            // Enable the "Close All" and "Close Other" buttons if there are any tabs
+            // Enable the "Close All" button if there are any tabs
             closeAllTabsButton.disabled = totalTabCount === 0;
-            closeOtherTabsButton.disabled = false; // TODO check calculations
+
+            // Count ungrouped tabs after all groups are processed
+            countUngroupedTabs();
           });
         });
       });
-    });
-
-    // Count ungrouped tabs
-    chrome.tabs.query({}, (tabs) => {
-      const activeDomains = groupNames.flatMap(groupName => {
-        let domains = [];
-        getDomainsFromStorage(groupName, (d) => {
-          domains = d;
-        });
-        return domains;
-      });
-
-      tabs.forEach(tab => {
-        const url = new URL(tab.url);
-        if (!activeDomains.some(domain => (!!domain && url.hostname.includes(domain)))) {
-          ungroupedTabCount++;
-        }
-      });
-
-      closeOtherTabsButton.textContent = `Close Other (${ungroupedTabCount}) Tabs`;
     });
   });
 };

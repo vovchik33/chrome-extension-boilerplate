@@ -302,6 +302,7 @@ const refreshControls = () => {
       
       // Set up "Close All" button to close only grouped tabs
       const newCloseAllButton = closeAllTabsButton.cloneNode(true);
+      // Text will be updated when we know if there are groups with tabs
       newCloseAllButton.textContent = 'Close All Tabs';
       newCloseAllButton.disabled = true;
       newCloseAllButton.addEventListener('click', () => {
@@ -432,6 +433,12 @@ const refreshControls = () => {
             const closeAllButton = closeAllTabsButtonDiv.querySelector('.close-all-tabs-button');
             if (closeAllButton) {
               closeAllButton.disabled = totalTabCount === 0;
+              // Update button text to "Close All Tabs in Groups" if there are groups with tabs
+              if (totalTabCount > 0) {
+                closeAllButton.textContent = 'Close All Tabs in Groups';
+              } else {
+                closeAllButton.textContent = 'Close All Tabs';
+              }
             }
 
             // Count ungrouped tabs after all groups are processed

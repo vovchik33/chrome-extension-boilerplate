@@ -1,263 +1,303 @@
 body {
-    min-width: 300px;
+    min-width: 320px;
+    max-width: 400px;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #202124;
+    background-color: #ffffff;
+}
+
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid #e8eaed;
+    background-color: #ffffff;
 }
 
 .header-title {
-    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    color: #202124;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: 0.25px;
 }
 
 .icon-button {
-    background: none;
+    background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.icon-button:hover {
+    background-color: #f1f3f4;
+}
+
+.icon-button:active {
+    background-color: #e8eaed;
 }
 
 .icon-button img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.7;
+}
+
+.icon-button:hover img {
+    opacity: 1;
 }
 
 button {
     cursor: pointer;
 }
 
-#closeAllDiv {
-    text-align: center;
+#closeButtons {
+    padding: 8px 0;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
-#closeAllTabsButton {
-    background-color: #f44336;
-    color: white;
-    margin-top: 5px;
-    /*border: none;*/
-    /*padding: 5px 10px;*/
-    cursor: pointer;
-    /*font-size: 16px;*/
-    border-radius: 5px;
-    width: 100%;
-}
-
-#closeAllTabsButton:hover {
-    background-color: #e53935;
-}
-
-#closeAllTabsButton:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-#closeOtherDiv {
-    text-align: center;
-}
-
-#closeOtherButton {
-    background-color: blue;
-    color: white;
-    margin-top: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
-}
-
-#closeOtherButton:hover {
-    background-color: darkblue;
-}
-
-#closeOtherButton:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-    opacity: 0.6;
+#closeAllDiv,
+#closeOtherDiv,
+#stickAllTabsDiv {
+    padding: 0 16px;
+    margin-bottom: 8px;
 }
 
 /* Group styles */
 .group-count {
     display: flex;
-    gap: 5px;
-    margin-bottom: 5px;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    margin: 0;
+    border-bottom: 1px solid #f1f3f4;
+    transition: background-color 0.15s;
+}
+
+.group-count:hover {
+    background-color: #f8f9fa;
+}
+
+.group-count:last-child {
+    border-bottom: none;
 }
 
 .group-name {
     flex: 1;
     text-align: left;
+    font-size: 13px;
+    font-weight: 400;
+    color: #202124;
+    margin: 0;
 }
 
 .group-name.highlight {
-    color: green;
+    color: #1a73e8;
+    font-weight: 500;
 }
 
 .close-group-button {
-    background-color: transparent; /* Transparent background */
-    color: grey; /* Grey text color */
-    border: 1px solid grey; /* Grey border */
-    border-radius: 999px; /* Rounded corners */
+    background-color: transparent;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
-    min-width: 22px;
-    height: 22px;
+    min-width: 28px;
+    height: 28px;
     flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
 }
 
 .close-group-button:hover {
-    background-color: #f44336; /* Red background on hover */
-    color: white; /* White text color on hover */
-    border: 1px solid white; /* White border on hover */
+    background-color: #ea4335;
+    color: white;
+    border-color: #ea4335;
+}
+
+.close-group-button:active {
+    background-color: #c5221f;
 }
 
 .close-group-button:disabled {
-    background-color: #d3d3d3; /* Gray color when disabled */
+    background-color: transparent;
+    color: #dadce0;
+    border-color: #dadce0;
     cursor: not-allowed;
+    opacity: 0.5;
 }
 
 
 .add-current-tab-button {
-    background-color: transparent; /* Transparent background */
-    color: grey; /* Grey text color */
-    border: 1px solid grey; /* Grey border */
-    border-radius: 999px; /* Rounded corners */
-    padding: 2px 6px;
-    font-size: 14px;
+    background-color: transparent;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 16px;
     cursor: pointer;
-    min-width: 22px;
-    height: 22px;
+    min-width: 28px;
+    height: 28px;
     flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-weight: 500;
 }
 
 .add-current-tab-button:hover {
-    background-color: #45a049; /* Green background on hover */
-    color: white; /* White text color on hover */
-    border: 1px solid white; /* White border on hover */
+    background-color: #34a853;
+    color: white;
+    border-color: #34a853;
+}
+
+.add-current-tab-button:active {
+    background-color: #2d8e47;
 }
 
 .add-current-tab-button:disabled {
-    background-color: #d3d3d3; /* Gray color when disabled */
+    background-color: transparent;
+    color: #dadce0;
+    border-color: #dadce0;
     cursor: not-allowed;
+    opacity: 0.5;
 }
 
 .remove-from-group-button {
-    background-color: transparent; /* Transparent background */
-    color: grey; /* Grey text color */
-    border: 1px solid grey; /* Grey border */
-    border-radius: 999px; /* Rounded corners */
-    font-size: 14px;
+    background-color: transparent;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 16px;
     cursor: pointer;
-    min-width: 22px;
-    height: 22px;
+    min-width: 28px;
+    height: 28px;
     flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-weight: 500;
 }
 
 .remove-from-group-button:hover {
-    background-color: #f44336; /* Red background on hover */
-    color: white; /* White text color on hover */
-    border: 1px solid white; /* White border on hover */
+    background-color: #ea4335;
+    color: white;
+    border-color: #ea4335;
+}
+
+.remove-from-group-button:active {
+    background-color: #c5221f;
 }
 
 .remove-from-group-button:disabled {
-    background-color: grey; /* Gray color when disabled */
+    background-color: transparent;
+    color: #dadce0;
+    border-color: #dadce0;
     cursor: not-allowed;
+    opacity: 0.5;
 }
 
 .move-group-button {
-    background-color: transparent; /* Transparent background */
-    color: grey; /* Grey text color */
-    border: 1px solid grey; /* Grey border */
-    border-radius: 999px; /* Rounded corners */
+    background-color: transparent;
+    color: #5f6368;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
-    min-width: 22px;
-    height: 22px;
+    min-width: 28px;
+    height: 28px;
     flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
 }
 
 .move-group-button:hover {
-    background-color: #2196F3; /* Blue background on hover */
-    color: white; /* White text color on hover */
-    border: 1px solid white; /* White border on hover */
+    background-color: #1a73e8;
+    color: white;
+    border-color: #1a73e8;
+}
+
+.move-group-button:active {
+    background-color: #1557b0;
 }
 
 .move-group-button:disabled {
-    background-color: #d3d3d3; /* Gray color when disabled */
+    background-color: transparent;
+    color: #dadce0;
+    border-color: #dadce0;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
+}
+
+.close-all-tabs-button,
+.close-other-tabs-button,
+.move-tabs-button {
+    width: 100%;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.close-all-tabs-button:hover,
+.close-other-tabs-button:hover,
+.move-tabs-button:hover {
+    background-color: #1557b0;
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+}
+
+.close-all-tabs-button:active,
+.close-other-tabs-button:active,
+.move-tabs-button:active {
+    background-color: #0d47a1;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
 .close-all-tabs-button {
-    margin-top: 5px;
-    background-color: #f44336; /* Red background */
-    color: white; /* White text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Slightly rounded corners */
-    padding: 8px 16px; /* Padding for the button */
-    font-size: 14px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-    width: 100%;
+    background-color: #ea4335;
 }
 
 .close-all-tabs-button:hover {
-    background-color: #e53935; /* Darker red on hover */
+    background-color: #c5221f;
 }
 
-.close-all-tabs-button:disabled {
-    background-color: #e0e0e0; /* Grey background when disabled */
-    color: #9e9e9e; /* Grey text color when disabled */
-    cursor: not-allowed; /* Not-allowed cursor when disabled */
-    opacity: 0.6; /* Slightly transparent when disabled */
+.close-all-tabs-button:active {
+    background-color: #b31412;
 }
 
-.close-other-tabs-button {
-    margin-top: 5px;
-    background-color: #2196F3; /* Blue background */
-    color: white; /* White text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Slightly rounded corners */
-    padding: 8px 16px; /* Padding for the button */
-    font-size: 14px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-    width: 100%;
-}
-
-.close-other-tabs-button:hover {
-    background-color: #1976D2; /* Darker blue on hover */
-}
-
-.close-other-tabs-button:disabled {
-    background-color: #e0e0e0; /* Grey background when disabled */
-    color: #9e9e9e; /* Grey text color when disabled */
-    cursor: not-allowed; /* Not-allowed cursor when disabled */
-    opacity: 0.6; /* Slightly transparent when disabled */
-}
-
-.move-tabs-button {
-    background-color: #4CAF50; /* Green background */
-    color: white; /* White text color */
-    border: none; /* No border */
-    border-radius: 4px; /* Slightly rounded corners */
-    padding: 8px 16px; /* Padding for the button */
-    font-size: 14px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
-    width: 100%;
-    margin-top: 10px;
-}
-
-.move-tabs-button:hover {
-    background-color: #388E3C; /* Darker green on hover */
-}
-
+.close-all-tabs-button:disabled,
+.close-other-tabs-button:disabled,
 .move-tabs-button:disabled {
-    background-color: #e0e0e0; /* Grey background when disabled */
-    color: #9e9e9e; /* Grey text color when disabled */
-    cursor: not-allowed; /* Not-allowed cursor when disabled */
-    opacity: 0.6; /* Slightly transparent when disabled */
+    background-color: #f1f3f4;
+    color: #9aa0a6;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: 1;
 }

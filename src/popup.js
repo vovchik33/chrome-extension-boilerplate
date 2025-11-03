@@ -2,13 +2,47 @@ document.getElementById('openOptionsBtn').addEventListener('click', () => {
   chrome.runtime.openOptionsPage();
 });
 
+// Function to check if a hostname matches a domain pattern
+// Supports:
+// - Exact match: "google.com" matches "google.com" and "www.google.com"
+// - Subdomain wildcard: "*.google.com" matches "gemini.google.com", "maps.google.com", etc.
+// - TLD wildcard: "*.com" matches all .com domains
+// - Universal wildcard: "*" matches all domains
+function hostnameMatchesDomain(hostname, domain) {
+  if (!hostname || !domain) return false;
+  
+  // Universal wildcard - matches everything
+  if (domain === '*') return true;
+  
+  // Remove optional 'www.' prefix for comparison
+  const normalizedHostname = hostname.replace(/^www\./, '');
+  let normalizedDomain = domain.replace(/^www\./, '');
+  
+  // Handle wildcard patterns
+  if (normalizedDomain.startsWith('*.')) {
+    // Pattern like "*.google.com" - match all subdomains
+    const baseDomain = normalizedDomain.substring(2); // Remove "*. "
+    
+    // Check if hostname is the base domain itself or any subdomain
+    if (normalizedHostname === baseDomain) return true;
+    if (normalizedHostname.endsWith('.' + baseDomain)) return true;
+    
+    return false;
+  }
+  
+  // Exact match (no wildcards)
+  if (normalizedHostname === normalizedDomain) return true;
+  
+  return false;
+}
+
 // Function to close tabs with a specific domain
 function closeTabsWithDomain(domain) {
   // alert(domain);
   chrome.tabs.query({}, function (tabs) {
     tabs.forEach(tab => {
       const url = new URL(tab.url);
-      if (url.hostname.indexOf(domain) > -1) {
+      if (hostnameMatchesDomain(url.hostname, domain)) {
         chrome.tabs.remove(tab.id);
       }
     });
@@ -55,9 +89,13 @@ function countTabsWithDomains(domains, callback) {
     let count = 0;
 
     tabs.forEach((tab) => {
-      const url = new URL(tab.url);
-      if (!!url.hostname && domains.some(domain => !!domain && url.hostname.indexOf(domain) !== -1)) {
-        count++;
+      try {
+        const url = new URL(tab.url);
+        if (!!url.hostname && domains.some(domain => !!domain && hostnameMatchesDomain(url.hostname, domain))) {
+          count++;
+        }
+      } catch (e) {
+        // Skip invalid URLs
       }
     });
 
@@ -129,7 +167,7 @@ function moveGroupTabsToNewWindow(groupName) {
           if (!url.hostname || url.hostname.trim() === '') {
             return false;
           }
-          return domains.some(domain => !!domain && url.hostname.includes(domain));
+          return domains.some(domain => !!domain && hostnameMatchesDomain(url.hostname, domain));
         } catch (e) {
           return false; // Skip invalid URLs
         }
@@ -291,7 +329,7 @@ const refreshControls = () => {
             tabs.forEach(tab => {
               try {
                 const url = new URL(tab.url);
-                if (!activeDomains.some(domain => url.hostname.includes(domain))) {
+                if (!activeDomains.some(domain => hostnameMatchesDomain(url.hostname, domain))) {
                   chrome.tabs.remove(tab.id);
                 }
               } catch (e) {
@@ -319,7 +357,7 @@ const refreshControls = () => {
             try {
               const url = new URL(tab.url);
               const matchesGroup = allActiveDomains.some(domain => 
-                !!domain && url.hostname.includes(domain)
+                !!domain && hostnameMatchesDomain(url.hostname, domain)
               );
               if (!matchesGroup) {
                 ungroupedTabCount++;

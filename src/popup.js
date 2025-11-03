@@ -43,6 +43,7 @@ function getGroupNamesFromStorage(callback) {
       ? result.domainGroups
         .filter(group => group.active)
         .map(group => group.name)
+        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' })) // Sort alphabetically
       : [];
     callback(groupNames);
   });

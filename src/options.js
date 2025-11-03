@@ -68,7 +68,14 @@ const restoreGroups = (groups) => {
   const groupsList = document.getElementById('groupsList');
   groupsList.innerHTML = '';
 
-  groups.forEach((group, index) => {
+  // Sort groups alphabetically by name
+  const sortedGroups = [...groups].sort((a, b) => 
+    a.name.localeCompare(b.name, undefined, { sensitivity: 'base' })
+  );
+
+  sortedGroups.forEach((group, index) => {
+    // Find the original index in the unsorted array for updating
+    const originalIndex = groups.findIndex(g => g.name === group.name);
     const li = document.createElement('li');
 
     const div = document.createElement('div');
@@ -77,7 +84,7 @@ const restoreGroups = (groups) => {
       document.querySelectorAll('.group-item').forEach(item => item.classList.remove('selected'));
       div.classList.add('selected');
       populateEditor(group);
-      selectedIndex = index; // Update the selected index
+      selectedIndex = originalIndex; // Update the selected index using original position
     });
 
     const checkbox = document.createElement('input');
@@ -138,14 +145,19 @@ const clearOptions = () => {
 // Sets recommended options
 const useRecommended = () => {
   const recommendedGroups = [
-    { active: true, name: 'Empty', domains: ['newtab'] },
-    { active: true, name: 'Email', domains: ['gmail.com', 'mail.com', 'yahoo.com', 'outlook.com', 'mail.ru', 'aol.com', 'icloud.com', 'protonmail.com', 'zoho.com', 'yandex.com', 'tutanota.com', 'fastmail.com', 'gmx.com', 'hushmail.com', 'mailfence.com'] },
-    { active: true, name: 'Social Media', domains: ['chatgpt.com', 'coursehunter.net', 'facebook.com', 'x.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'tiktok.com', 'youtube.com', 'snapchat.com', 'pinterest.com', 'reddit.com', 'tumblr.com', 'vimeo.com', 'telegram.org', 'whatsapp.com', 'wechat.com', 'line.me'] },
-    { active: true, name: 'News', domains: ['kyivpost.com', 'pravda.ua', 'unian.info', 'ukrinform.net', '112.international', 'interfax.ua', 'lb.ua', 'zn.ua', 'segodnya.ua', 'nv.ua', 'obozrevatel.com', 'bbc.com', 'cnn.com', 'nytimes.com', 'theguardian.com', 'reuters.com', 'bloomberg.com'] },
-    { active: true, name: 'Shopping', domains: ['amazon.com', 'ebay.com', 'walmart.com', 'target.com', 'aliexpress.com', 'etsy.com', 'bestbuy.com', 'homedepot.com', 'wayfair.com', 'macys.com', 'costco.com', 'newegg.com', 'overstock.com', 'zappos.com', 'ikea.com'] },
-    { active: true, name: 'Work', domains: ['microsoftonline.com', 'bitbucket.org', 'localhost', 'stackoverflow.com', 'slack.com', 'trello.com', 'asana.com', 'jira.com', 'confluence.com', 'zoom.us', 'webex.com', 'gotomeeting.com', 'skype.com', 'microsoftteams.com', 'stash.com', 'figma.com', 'github.com', 'gitlab.com'] },
-    { active: true, name: 'Entertainment', domains: ['football.com', 'netflix.com', 'hulu.com', 'disneyplus.com', 'hbomax.com', 'primevideo.com', 'youtube.com', 'twitch.tv', 'vimeo.com', 'dailymotion.com', 'funnyordie.com', 'spotify.com', 'soundcloud.com', 'pandora.com', 'apple.com/music'] },
-    { active: true, name: 'Google', domains: ['google.com', 'gmail.com', 'youtube.com', 'drive.google.com', 'maps.google.com', 'translate.google.com', 'photos.google.com', 'calendar.google.com', 'meet.google.com', 'keep.google.com', 'news.google.com', 'books.google.com', 'play.google.com'] },
+    { active: true, name: 'Search Engines', domains: ['google.com', 'bing.com', 'yahoo.com', 'duckduckgo.com', 'baidu.com', 'yandex.com'] },
+    { active: true, name: 'Email Services', domains: ['gmail.com', 'outlook.com', 'yahoo.com', 'mail.com', 'protonmail.com', 'icloud.com', 'aol.com', 'zoho.com', 'yandex.com', 'mail.ru', 'gmx.com', 'fastmail.com'] },
+    { active: true, name: 'Social Media', domains: ['facebook.com', 'instagram.com', 'twitter.com', 'x.com', 'linkedin.com', 'tiktok.com', 'youtube.com', 'reddit.com', 'pinterest.com', 'snapchat.com', 'whatsapp.com', 'telegram.org', 'discord.com', 'twitch.tv', 'tumblr.com'] },
+    { active: true, name: 'E-commerce', domains: ['amazon.com', 'ebay.com', 'aliexpress.com', 'walmart.com', 'target.com', 'etsy.com', 'shopify.com', 'rakuten.com', 'mercadolivre.com', 'flipkart.com', 'taobao.com', 'jd.com'] },
+    { active: true, name: 'News & Media', domains: ['bbc.com', 'cnn.com', 'nytimes.com', 'theguardian.com', 'reuters.com', 'bloomberg.com', 'wsj.com', 'washingtonpost.com', 'usatoday.com', 'ap.org', 'npr.org', 'forbes.com'] },
+    { active: true, name: 'Cloud Storage', domains: ['drive.google.com', 'dropbox.com', 'onedrive.com', 'icloud.com', 'box.com', 'mega.nz', 'pcloud.com', 'mediafire.com'] },
+    { active: true, name: 'Video Streaming', domains: ['youtube.com', 'netflix.com', 'amazon.com/prime', 'primevideo.com', 'disney.com', 'disneyplus.com', 'hulu.com', 'hbo.com', 'hbomax.com', 'paramountplus.com', 'peacocktv.com', 'vimeo.com', 'dailymotion.com'] },
+    { active: true, name: 'Music Streaming', domains: ['spotify.com', 'youtube.com/music', 'apple.com/music', 'soundcloud.com', 'pandora.com', 'deezer.com', 'tidal.com', 'bandcamp.com'] },
+    { active: true, name: 'Educational Resources', domains: ['coursera.org', 'udemy.com', 'edx.org', 'khanacademy.org', 'udacity.com', 'codecademy.com', 'pluralsight.com', 'linkedin.com/learning', 'skillshare.com', 'masterclass.com', 'lynda.com', 'futurelearn.com', 'mit.edu', 'stanford.edu', 'harvard.edu', 'freecodecamp.org', 'w3schools.com', 'mdn.com'] },
+    { active: true, name: 'Productivity Tools', domains: ['office.com', 'microsoft.com', 'docs.google.com', 'sheets.google.com', 'slides.google.com', 'notion.so', 'trello.com', 'asana.com', 'monday.com', 'slack.com', 'zoom.us', 'webex.com', 'microsoftteams.com'] },
+    { active: true, name: 'Design Tools', domains: ['figma.com', 'adobe.com', 'sketch.com', 'canva.com', 'invisionapp.com', 'framer.com', 'penpot.app', 'whimsical.com', 'miro.com', 'dribbble.com', 'behance.net', 'ui8.net', 'unsplash.com', 'pexels.com', 'pixabay.com'] },
+    { active: true, name: 'Development', domains: ['github.com', 'gitlab.com', 'bitbucket.org', 'atlassian.com', 'jira.com', 'confluence.com', 'stackoverflow.com', 'stackexchange.com', 'npmjs.com', 'docker.com', 'kubernetes.io', 'aws.amazon.com', 'azure.microsoft.com', 'cloud.google.com', 'vercel.com', 'netlify.com', 'heroku.com', 'circleci.com', 'jenkins.io', 'travis-ci.com', 'codecov.io', 'sonarqube.org'] },
+    { active: true, name: 'Banking & Finance', domains: ['paypal.com', 'stripe.com', 'visa.com', 'mastercard.com', 'americanexpress.com', 'coinbase.com', 'binance.com', 'robinhood.com', 'schwab.com', 'fidelity.com'] },
   ];
   chrome.storage.sync.set({ domainGroups: recommendedGroups }, () => {
     restoreGroups(recommendedGroups);

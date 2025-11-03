@@ -1,7 +1,7 @@
 {
   "name": "Tabs Combiner",
   "description": "Organize and manage browser tabs by domain groups. Close, organize, and control tabs efficiently with customizable domain-based grouping.",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "manifest_version": 3,
   "icons": {
     "16": "images/dark/dark-extension-icon16.png",

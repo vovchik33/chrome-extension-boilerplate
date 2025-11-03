@@ -10,6 +10,7 @@ builds.zip
 *.zip
 builds/latest/
 builds/.temp-build/
+builds/archives/
 
 # Dependencies
 node_modules/

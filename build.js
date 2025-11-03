@@ -12,6 +12,7 @@ const sass = require('sass');
 const config = {
   version: '0.2',
   buildDir: 'builds',
+  archivesDir: 'builds/archives',
   srcDir: 'src',
   extensionName: 'tabs-combiner'
 };
@@ -352,7 +353,13 @@ function createZip() {
     try {
       const version = getVersion();
       const zipFileName = `${config.extensionName}_${version}.zip`;
-      const zipPath = path.join(config.buildDir, zipFileName);
+      
+      // Ensure archives directory exists
+      if (!fs.existsSync(config.archivesDir)) {
+        fs.mkdirSync(config.archivesDir, { recursive: true });
+      }
+      
+      const zipPath = path.join(config.archivesDir, zipFileName);
 
       // Ensure build directory exists
       if (!fs.existsSync(config.buildDir)) {

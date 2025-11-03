@@ -360,16 +360,6 @@ const refreshControls = () => {
 
             const button = addOrRemoveButton(groupName, domain, domains);
             
-            // Add "Move to Window" button
-            const moveToWindowButton = document.createElement('button');
-            moveToWindowButton.className = 'move-group-button';
-            moveToWindowButton.innerHTML = `⊞`;
-            moveToWindowButton.title = `Move ${count} tabs to new window`;
-            moveToWindowButton.disabled = count === 0;
-            moveToWindowButton.addEventListener('click', () => {
-              moveGroupTabsToNewWindow(groupName);
-            });
-            
             const closeGroupButton = document.createElement('button');
             closeGroupButton.className = 'close-group-button';
             closeGroupButton.innerHTML = `✕`;
@@ -378,14 +368,24 @@ const refreshControls = () => {
               closeTabsForGroupName(groupName);
               setTimeout(refreshControls, 500); // Delay to allow tabs to close
             });
+            
+            // Add "Move to Window" button
+            const moveToWindowButton = document.createElement('button');
+            moveToWindowButton.className = 'move-group-button';
+            moveToWindowButton.innerHTML = `↗`; // Up-right arrow icon
+            moveToWindowButton.title = `Move ${count} tabs to new window`;
+            moveToWindowButton.disabled = count === 0;
+            moveToWindowButton.addEventListener('click', () => {
+              moveGroupTabsToNewWindow(groupName);
+            });
 
             const groupElement = document.createElement('div');
             groupElement.className = 'group-count';
 
             groupElement.appendChild(groupNameElement);
             groupElement.appendChild(button);
-            groupElement.appendChild(moveToWindowButton);
             groupElement.appendChild(closeGroupButton);
+            groupElement.appendChild(moveToWindowButton);
 
             closeButtonsDiv.appendChild(groupElement);
 

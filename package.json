@@ -1,6 +1,6 @@
 {
   "name": "tabs-combiner",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Organize and manage browser tabs by domain groups",
   "scripts": {
     "build": "node build.js",

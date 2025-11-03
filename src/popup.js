@@ -113,6 +113,42 @@ function moveAllTabsToOneWindow() {
   });
 }
 
+// Function to move tabs matching a group to a new window
+function moveGroupTabsToNewWindow(groupName) {
+  getDomainsFromStorage(groupName, (domains) => {
+    chrome.tabs.query({}, (allTabs) => {
+      const matchingTabs = allTabs.filter(tab => {
+        try {
+          // Skip empty or system tabs (chrome://, about:, etc.)
+          if (!tab.url || tab.url.startsWith('chrome://') || tab.url.startsWith('about:')) {
+            return false;
+          }
+          const url = new URL(tab.url);
+          // Skip tabs without hostname or empty hostname
+          if (!url.hostname || url.hostname.trim() === '') {
+            return false;
+          }
+          return domains.some(domain => !!domain && url.hostname.includes(domain));
+        } catch (e) {
+          return false; // Skip invalid URLs
+        }
+      });
+
+      if (matchingTabs.length === 0) {
+        return; // No matching tabs to move
+      }
+
+      const tabIds = matchingTabs.map(tab => tab.id);
+      
+      // Create new window and move tabs to it
+      chrome.windows.create({}, (newWindow) => {
+        chrome.tabs.move(tabIds, { windowId: newWindow.id, index: -1 });
+        setTimeout(refreshControls, 500); // Refresh to update counts
+      });
+    });
+  });
+}
+
 const refreshControls = () => {
   const closeAllTabsButtonDiv = document.getElementById('closeAllDiv');
   closeAllTabsButtonDiv.innerHTML = ''; // Clear existing buttons
@@ -305,6 +341,17 @@ const refreshControls = () => {
             }
 
             const button = addOrRemoveButton(groupName, domain, domains);
+            
+            // Add "Move to Window" button
+            const moveToWindowButton = document.createElement('button');
+            moveToWindowButton.className = 'move-group-button';
+            moveToWindowButton.innerHTML = `⊞`;
+            moveToWindowButton.title = `Move ${count} tabs to new window`;
+            moveToWindowButton.disabled = count === 0;
+            moveToWindowButton.addEventListener('click', () => {
+              moveGroupTabsToNewWindow(groupName);
+            });
+            
             const closeGroupButton = document.createElement('button');
             closeGroupButton.className = 'close-group-button';
             closeGroupButton.innerHTML = `✕`;
@@ -319,6 +366,7 @@ const refreshControls = () => {
 
             groupElement.appendChild(groupNameElement);
             groupElement.appendChild(button);
+            groupElement.appendChild(moveToWindowButton);
             groupElement.appendChild(closeGroupButton);
 
             closeButtonsDiv.appendChild(groupElement);

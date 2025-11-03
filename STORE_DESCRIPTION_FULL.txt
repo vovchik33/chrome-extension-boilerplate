@@ -1,0 +1,56 @@
+Tabs Combiner is a powerful browser extension designed to help you take control of your browsing experience. Tired of managing dozens of open tabs? This extension automatically groups your tabs by domain, making it easy to organize, manage, and close tabs based on website categories.
+
+Key Features:
+
+🌐 Domain-Based Tab Grouping
+- Automatically organizes tabs by their domain
+- Group related websites together for better organization
+- Visual grouping makes it easy to see tabs from the same domain
+
+⚡ Quick Tab Management
+- Close all tabs with one click
+- Close other tabs (keep current)
+- Close specific domain groups
+- Move tabs between groups effortlessly
+
+🔧 Customizable Groups
+- Create custom domain groups for your workflow
+- Pre-configured recommended groups included:
+  - Email (Gmail, Outlook, Yahoo, and more)
+  - Social Media (Facebook, Twitter, Instagram, LinkedIn, etc.)
+  - News (BBC, CNN, Reuters, and major news sites)
+  - Shopping (Amazon, eBay, Walmart, and popular stores)
+  - Work (GitHub, Slack, Jira, Microsoft Teams, etc.)
+  - Entertainment (Netflix, YouTube, Spotify, and streaming services)
+
+💾 Import & Export
+- Export your domain groups for backup
+- Import groups from other devices or share with others
+- Preserve your custom configurations
+
+🎯 Smart Organization
+- Visual tab count per group
+- Highlight active groups
+- Easy-to-use popup interface
+- Quick access to settings
+
+🔒 Privacy-First
+- All data stored locally in your browser
+- No tracking, no analytics, no external servers
+- Your browsing data never leaves your computer
+- Complete privacy and security
+
+Perfect for:
+- Power users managing 50+ tabs
+- Professionals organizing work-related websites
+- Students managing research and project tabs
+- Anyone who wants a cleaner, more organized browsing experience
+
+Privacy & Permissions:
+This extension respects your privacy. All data is stored locally - we never collect, track, or transmit any personal information. Minimal permissions requested are used only for tab management functionality.
+
+Get started in seconds:
+1. Install and click the extension icon
+2. Configure your domain groups in settings
+3. Start managing your tabs efficiently!
+

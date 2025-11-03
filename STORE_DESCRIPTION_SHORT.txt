@@ -1,0 +1,2 @@
+Manage and organize browser tabs by domain groups. Close, organize, and control tabs efficiently with customizable domain-based grouping.
+

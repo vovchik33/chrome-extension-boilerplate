@@ -44,6 +44,17 @@ You need these icon sizes (all should be in `src/images/`):
 Create a hosted privacy policy page or use the provided PRIVACY.md file.
 You'll need to host it at a public URL.
 
+### Privacy Practices - Permission Justifications
+Chrome Web Store requires justification for each permission. Use the provided files:
+- **PRIVACY_PRACTICES_JUSTIFICATION.md** - Detailed justifications
+- **PERMISSION_JUSTIFICATIONS_QUICK_REFERENCE.md** - Quick reference for copy-paste
+
+When filling the "Privacy practices" tab in the developer console, provide justification for:
+- `activeTab` - Access current tab to display domain information
+- `scripting` - Interact with tabs for management operations
+- `storage` - Save user-configured domain groups locally
+- `tabs` - Query and manage tabs for domain-based grouping
+
 ## Step 3: Create Store Listing
 
 ### Basic Information

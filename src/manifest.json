@@ -1,7 +1,7 @@
 {
   "name": "Tabs Combiner",
   "description": "Tabs Combiner is a browser extension that helps you efficiently control tabs based on grouped domains",
-  "version": "0.3.0",
+  "version": "0.0.0",
   "manifest_version": 3,
   "permissions": [
     "activeTab",

@@ -108,7 +108,42 @@ function updateVersionInFile(filePath, newVersion) {
   }
 }
 
-// Create git tag for the new version
+// Commit version changes
+function commitVersionChanges(newVersion, oldVersion) {
+  try {
+    // Check if we're in a git repository
+    execSync('git rev-parse --git-dir', { stdio: 'ignore' });
+  } catch (error) {
+    // Not a git repository, skip committing
+    return false;
+  }
+
+  try {
+    // Stage the version files
+    execSync('git add src/manifest.json package.json', { stdio: 'ignore' });
+    
+    // Check if there are any staged changes to commit
+    const stagedStatus = execSync('git diff --cached --name-only', { encoding: 'utf8' });
+    
+    if (!stagedStatus.trim()) {
+      // No changes staged, nothing to commit
+      return false;
+    }
+    
+    // Create commit message
+    const commitMessage = `Bump version to ${newVersion}`;
+    
+    // Commit the changes
+    execSync(`git commit -m "${commitMessage}"`, { stdio: 'inherit' });
+    console.log(`✅ Committed version changes: ${oldVersion} → ${newVersion}`);
+    return true;
+  } catch (error) {
+    console.warn(`⚠️  Could not commit version changes: ${error.message}`);
+    return false;
+  }
+}
+
+// Create git tag for the new version (on the current HEAD commit)
 function createGitTag(version) {
   try {
     // Check if we're in a git repository
@@ -132,7 +167,7 @@ function createGitTag(version) {
       // Tag doesn't exist, proceed to create it
     }
     
-    // Create annotated tag
+    // Create annotated tag on current HEAD (which should be the version commit)
     execSync(`git tag -a "${tagName}" -m "Version ${normalizedVersion}"`, { stdio: 'inherit' });
     console.log(`✅ Created git tag: ${tagName}`);
     return true;
@@ -208,8 +243,12 @@ function main() {
   updated |= updateVersionInFile('package.json', newVersion);
 
   if (updated) {
-    // Create git tag for the new version
+    // Commit version changes
+    commitVersionChanges(newVersion, currentVersion);
+    
+    // Create git tag on the commit we just made
     createGitTag(newVersion);
+    
     console.log(`\n✨ Version bumped successfully to ${newVersion}!\n`);
     
     // Trigger build with new version

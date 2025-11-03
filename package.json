@@ -1,6 +1,6 @@
 {
   "name": "tabs-combiner",
-  "version": "0.3.0",
+  "version": "0.0.0",
   "description": "Chrome extension for managing tabs",
   "scripts": {
     "build": "node build.js",

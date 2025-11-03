@@ -71,11 +71,11 @@ const addOrRemoveButton = (groupName, domain, domains) => {
   if (domainKnown) {
     button.className = 'remove-from-group-button';
     button.innerHTML = '-';
-    button.title = 'Remove from Group';
+    button.title = 'Remove domain from this group';
   } else {
     button.className = 'add-current-tab-button';
     button.innerHTML = '+';
-    button.title = 'Add to Group';
+    button.title = 'Add current domain to this group';
   }
 
 
@@ -363,7 +363,7 @@ const refreshControls = () => {
             const closeGroupButton = document.createElement('button');
             closeGroupButton.className = 'close-group-button';
             closeGroupButton.innerHTML = `✕`;
-            closeGroupButton.title = `Close ${count} tabs`;
+            closeGroupButton.title = `Close all ${count} tabs matching this group's domains`;
             closeGroupButton.addEventListener('click', () => {
               closeTabsForGroupName(groupName);
               setTimeout(refreshControls, 500); // Delay to allow tabs to close

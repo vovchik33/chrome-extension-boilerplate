@@ -1,7 +1,7 @@
 {
   "name": "tabs-combiner",
   "version": "0.0.2",
-  "description": "Chrome extension for managing tabs",
+  "description": "Organize and manage browser tabs by domain groups",
   "scripts": {
     "build": "node build.js",
     "build:prod": "node build.js --prod",

@@ -287,6 +287,20 @@ button {
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
 }
 
+.move-tabs-button {
+    background-color: #34a853;
+}
+
+.move-tabs-button:hover {
+    background-color: #2d8e47;
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+}
+
+.move-tabs-button:active {
+    background-color: #268542;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
 .close-all-tabs-button {
     background-color: #ea4335;
 }

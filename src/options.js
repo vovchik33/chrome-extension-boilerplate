@@ -145,6 +145,7 @@ const clearOptions = () => {
 // Sets recommended options
 const useRecommended = () => {
   const recommendedGroups = [
+    { active: true, name: 'Google', domains: ['*.google.com'] },
     { active: true, name: 'Search Engines', domains: ['google.com', 'bing.com', 'yahoo.com', 'duckduckgo.com', 'baidu.com', 'yandex.com'] },
     { active: true, name: 'Email Services', domains: ['gmail.com', 'mail.google.com', 'outlook.com', 'outlook.live.com', 'hotmail.com', 'yahoo.com', 'mail.yahoo.com', 'mail.com', 'protonmail.com', 'proton.me', 'icloud.com', 'mail.icloud.com', 'aol.com', 'mail.aol.com', 'zoho.com', 'mail.zoho.com', 'yandex.com', 'mail.yandex.com', 'mail.ru', 'gmx.com', 'mail.gmx.com', 'fastmail.com', 'tutanota.com', 'mail.tutanota.com'] },
     { active: true, name: 'Social Media', domains: ['facebook.com', 'instagram.com', 'twitter.com', 'x.com', 'linkedin.com', 'tiktok.com', 'youtube.com', 'reddit.com', 'pinterest.com', 'snapchat.com', 'whatsapp.com', 'telegram.org', 'discord.com', 'twitch.tv', 'tumblr.com'] },

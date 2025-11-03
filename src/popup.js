@@ -105,7 +105,8 @@ function countTabsWithDomains(domains, callback) {
 
 const addOrRemoveButton = (groupName, domain, domains) => {
   const button = document.createElement('button');
-  const domainKnown = domains.includes(domain);
+  // Check if domain matches any domain in the group (handles www.domain vs domain)
+  const domainKnown = domains.some(d => d && hostnameMatchesDomain(domain, d));
 
   if (domainKnown) {
     button.className = 'remove-from-group-button';
@@ -124,9 +125,11 @@ const addOrRemoveButton = (groupName, domain, domains) => {
       const groupIdx = groups.findIndex(group => group.name === groupName);
 
       if (groupIdx !== -1) {
-        if (domains.includes(domain)) {
-          // Remove domain from group
-          groups[groupIdx].domains = groups[groupIdx].domains.filter(d => d !== domain);
+        // Find the matching domain (could be www.domain or domain)
+        const matchingDomain = domains.find(d => d && hostnameMatchesDomain(domain, d));
+        if (matchingDomain) {
+          // Remove domain from group (remove the exact domain stored in the group)
+          groups[groupIdx].domains = groups[groupIdx].domains.filter(d => d !== matchingDomain);
         } else {
           const requestDomainName = prompt(`Domain ${domain} will be added to ${groupName}`, domain);
           // Add domain to group
@@ -394,7 +397,8 @@ const refreshControls = () => {
             const url = new URL(currentTab.url);
             const domain = url.hostname;
 
-            if (domains.includes(domain)) {
+            // Check if domain matches any domain in the group (handles www.domain vs domain)
+            if (domains.some(d => d && hostnameMatchesDomain(domain, d))) {
               groupNameElement.classList.add('highlight');
             }
 

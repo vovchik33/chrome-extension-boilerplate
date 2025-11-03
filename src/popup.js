@@ -122,48 +122,16 @@ const refreshControls = () => {
   closeAllTabsButton.textContent = 'Close All Tabs';
   closeAllTabsButton.classList.add('close-all-tabs-button');
   closeAllTabsButton.disabled = true; // Initially disable the button
-  closeAllTabsButton.addEventListener('click', () => {
-    chrome.storage.sync.get({ domainGroups: [] }, (items) => {
-      const domainGroups = items.domainGroups;
-
-      domainGroups.forEach(group => {
-        if (group.active) {
-          closeTabsForGroupName(group.name);
-        }
-      });
-
-      setTimeout(refreshControls, 500); // Delay to allow tabs to close
-    });
-  });
   closeAllTabsButtonDiv.appendChild(closeAllTabsButton);
 
   const closeOtherTabsButtonDiv = document.getElementById('closeOtherDiv');
   closeOtherTabsButtonDiv.innerHTML = ''; // Clear existing buttons
 
-  // Add "Close Other" button
+  // Add "Close Other" button (will be hidden if no domains exist)
   const closeOtherTabsButton = document.createElement('button');
   closeOtherTabsButton.classList.add('close-other-tabs-button');
-  closeOtherTabsButton.disabled = false; // Initially disable the button but TODO: Enable it when there are tabs without group
-
-  closeOtherTabsButton.addEventListener('click', () => {
-    chrome.storage.sync.get({ domainGroups: [] }, (items) => {
-      const activeDomains = items.domainGroups
-        .filter(group => group.active)
-        .flatMap(group => group.domains);
-
-      chrome.tabs.query({}, (tabs) => {
-        tabs.forEach(tab => {
-          const url = new URL(tab.url);
-          if (!activeDomains.some(domain => url.hostname.includes(domain))) {
-            chrome.tabs.remove(tab.id);
-          }
-        });
-      });
-
-      setTimeout(refreshControls, 500); // Delay to allow tabs to close
-    });
-  });
-  closeOtherTabsButtonDiv.appendChild(closeOtherTabsButton);
+  closeOtherTabsButton.disabled = false;
+  // Event listener will be added conditionally in checkForDomains callback
 
   const closeButtonsDiv = document.getElementById('closeButtons');
   closeButtonsDiv.innerHTML = ''; // Clear existing buttons
@@ -187,14 +155,103 @@ const refreshControls = () => {
     let domainsCollected = 0;
     const allActiveDomains = [];
 
-    if (groupNames.length === 0) {
-      // If no groups, count all tabs as ungrouped
-      chrome.tabs.query({}, (tabs) => {
-        const ungroupedCount = tabs.length;
-        closeOtherTabsButton.textContent = `Close Other (${ungroupedCount}) Tabs`;
-        closeOtherTabsButton.disabled = ungroupedCount === 0;
-        closeAllTabsButton.disabled = true;
+    // Check if there are any domains in active groups
+    const checkForDomains = (callback) => {
+      if (groupNames.length === 0) {
+        callback(false);
+        return;
+      }
+
+      let checkedGroups = 0;
+      let hasAnyDomains = false;
+
+      groupNames.forEach(groupName => {
+        getDomainsFromStorage(groupName, (domains) => {
+          if (domains.length > 0) {
+            hasAnyDomains = true;
+          }
+          checkedGroups++;
+          if (checkedGroups === groupNames.length) {
+            callback(hasAnyDomains);
+          }
+        });
       });
+    };
+
+    checkForDomains((hasDomains) => {
+      if (!hasDomains) {
+        // No domains exist - hide "Close Other" button and enable "Close All" to close all tabs
+        closeOtherTabsButtonDiv.style.display = 'none';
+        
+        chrome.tabs.query({}, (tabs) => {
+          const totalTabs = tabs.length;
+          
+          // Update click handler to close ALL tabs without filtering
+          const newCloseAllButton = closeAllTabsButton.cloneNode(true);
+          newCloseAllButton.textContent = 'Close All Tabs';
+          newCloseAllButton.disabled = totalTabs === 0;
+          newCloseAllButton.addEventListener('click', () => {
+            chrome.tabs.query({}, (allTabs) => {
+              allTabs.forEach(tab => {
+                chrome.tabs.remove(tab.id);
+              });
+              setTimeout(refreshControls, 500);
+            });
+          });
+          closeAllTabsButtonDiv.replaceChild(newCloseAllButton, closeAllTabsButton);
+        });
+        return; // Early return - don't process groups when no domains exist
+      }
+
+      // Domains exist - show "Close Other" button and use filtered behavior
+      closeOtherTabsButtonDiv.style.display = '';
+      closeOtherTabsButtonDiv.appendChild(closeOtherTabsButton);
+      
+      // Set up "Close All" button to close only grouped tabs
+      const newCloseAllButton = closeAllTabsButton.cloneNode(true);
+      newCloseAllButton.textContent = 'Close All Tabs';
+      newCloseAllButton.disabled = true;
+      newCloseAllButton.addEventListener('click', () => {
+        chrome.storage.sync.get({ domainGroups: [] }, (items) => {
+          const domainGroups = items.domainGroups;
+
+          domainGroups.forEach(group => {
+            if (group.active) {
+              closeTabsForGroupName(group.name);
+            }
+          });
+
+          setTimeout(refreshControls, 500); // Delay to allow tabs to close
+        });
+      });
+
+      // Set up "Close Other" button handler
+      closeOtherTabsButton.addEventListener('click', () => {
+        chrome.storage.sync.get({ domainGroups: [] }, (items) => {
+          const activeDomains = items.domainGroups
+            .filter(group => group.active)
+            .flatMap(group => group.domains);
+
+          chrome.tabs.query({}, (tabs) => {
+            tabs.forEach(tab => {
+              try {
+                const url = new URL(tab.url);
+                if (!activeDomains.some(domain => url.hostname.includes(domain))) {
+                  chrome.tabs.remove(tab.id);
+                }
+              } catch (e) {
+                // Skip invalid URLs
+              }
+            });
+          });
+
+          setTimeout(refreshControls, 500); // Delay to allow tabs to close
+        });
+      });
+      closeAllTabsButtonDiv.replaceChild(newCloseAllButton, closeAllTabsButton);
+    });
+
+    if (groupNames.length === 0) {
       return;
     }
 
@@ -266,8 +323,11 @@ const refreshControls = () => {
 
             closeButtonsDiv.appendChild(groupElement);
 
-            // Enable the "Close All" button if there are any tabs
-            closeAllTabsButton.disabled = totalTabCount === 0;
+            // Enable the "Close All" button if there are any matching tabs
+            const closeAllButton = closeAllTabsButtonDiv.querySelector('.close-all-tabs-button');
+            if (closeAllButton) {
+              closeAllButton.disabled = totalTabCount === 0;
+            }
 
             // Count ungrouped tabs after all groups are processed
             countUngroupedTabs();

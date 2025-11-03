@@ -142,8 +142,26 @@ function moveGroupTabsToNewWindow(groupName) {
       
       // Create new window and move tabs to it
       chrome.windows.create({}, (newWindow) => {
-        chrome.tabs.move(tabIds, { windowId: newWindow.id, index: -1 });
-        setTimeout(refreshControls, 500); // Refresh to update counts
+        // Get all tabs in the new window to find and remove the empty initial tab
+        chrome.tabs.query({ windowId: newWindow.id }, (windowTabs) => {
+          // Find the empty tab (usually chrome://newtab/ or about:newtab)
+          const emptyTab = windowTabs.find(tab => 
+            !tab.url || 
+            tab.url === 'chrome://newtab/' || 
+            tab.url === 'about:newtab' ||
+            tab.url.startsWith('chrome://newtab') ||
+            tab.url.startsWith('about:newtab')
+          );
+          
+          // Move tabs to the new window
+          chrome.tabs.move(tabIds, { windowId: newWindow.id, index: -1 }, () => {
+            // Remove the empty tab after moving (if it still exists and tabs were moved successfully)
+            if (emptyTab && tabIds.length > 0) {
+              chrome.tabs.remove(emptyTab.id);
+            }
+            setTimeout(refreshControls, 500); // Refresh to update counts
+          });
+        });
       });
     });
   });
